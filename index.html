@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html class='h-100' dir='ltr' lang='en-GB'>
+
+<head>
+
+  <title>Invoice Creator</title>
+  <meta charset='utf-8' />
+  <meta content='width=device-width, initial-scale=1' name='viewport' />
+
+  <!-- CSS only -->
+  <link href='css/bootstrap.min.css' rel='stylesheet' />
+
+  <!-- SCRIPT only -->
+  <script src='js/jquery.min.js'></script>
+  <script src='js/angular.min.js'></script>
+
+  <style type='text/css'>
+    @media print {
+      body * {
+        visibility: hidden;
+      }
+
+      #capture,
+      #capture * {
+        visibility: visible;
+      }
+
+      #capture {
+        position: absolute;
+        top: 0;
+        left: 0;
+      }
+    }
+  </style>
+
+</head>
+
+
+<body class='text-bg-dark h-100'>
+
+  <section>
+    <header>
+      <div class='container text-center p-3'>
+        <div class='mx-auto'>
+          <h1 class='fw-bolder mb-0'>
+            Invoice Creator
+          </h1>
+        </div>
+      </div>
+    </header>
+  </section>
+
+
+  <section>
+    <main>
+      <div class='container'>
+        <div
+          class="row row-cols-1 row-cols-sm-2 row-cols-md-2 mt-3 mb-3 d-flex justify-content-center align-items-center"
+          ng-app="invoiceApp" ng-controller="invoiceCtrl">
+          <div class="col-sm-12 col-md-6">
+            <table class="table table-sm table-borderless text-bg-dark">
+              <tr class="text-center">
+                <th colspan="5">
+                  <input class="form-control form-control-sm text-bg-dark" type="text" placeholder="{{shop.name}}"
+                    ng-model="shop.name" />
+                </th>
+              </tr>
+
+              <tr class="text-center">
+                <td colspan="5">
+                  <p class="lh-1 m-0">
+                    <span>
+                      <input class="form-control form-control-sm text-bg-dark" type="text" placeholder="{{shop.addr1}}"
+                        ng-model="shop.addr1" />
+                    </span>
+                    <br />
+                    <span>
+                      <input class="form-control form-control-sm text-bg-dark" type="text" placeholder="{{shop.addr2}}"
+                        ng-model="shop.addr2" />
+                    </span>
+                    <br />
+                    <span>
+                      <input class="form-control form-control-sm text-bg-dark" type="text" placeholder="{{shop.addr3}}"
+                        ng-model="shop.addr3" />
+                    </span>
+                    <br />
+                    <span>
+                      <input class="form-control form-control-sm text-bg-dark" type="tel" placeholder="{{shop.tel}}"
+                        ng-model="shop.tel" />
+                    </span>
+                  </p>
+                </td>
+              </tr>
+
+
+              <tr class="text-center">
+                <td colspan="5">
+                  <div class="row sm-small">
+                    <div class="col-4">
+                      <p class="lh-1 m-0">
+                        <small>
+                          <span class="fw-bold">
+                            Currency
+                          </span>
+                          <br />
+                          <span>
+                            <input class="form-control form-control-sm text-bg-dark" type="text"
+                              placeholder="{{invoice.currency}}" ng-model="invoice.currency" />
+                          </span>
+                        </small>
+                      </p>
+                    </div>
+
+                    <div class="col-4">
+                      <p class="lh-1 m-0">
+                      </p>
+                    </div>
+
+                    <div class="col-4">
+                      <p class="lh-1 m-0">
+                      </p>
+                    </div>
+
+                  </div>
+                </td>
+              </tr>
+
+              <tr class="text-center">
+                <td colspan="5">
+                  <div class="row sm-small">
+                    <div class="col-4">
+                      <p class="lh-1 m-0">
+                        <small>
+                          <span class="fw-bold">
+                            ID
+                          </span>
+                          <br />
+                          <span>
+                            <input class="form-control form-control-sm text-bg-dark" type="text"
+                              placeholder="{{invoice.id}}" ng-model="invoice.id" />
+                          </span>
+                        </small>
+                      </p>
+                    </div>
+                    <div class="col-4">
+                      <p class="lh-1 m-0">
+                        <small>
+                          <span class="fw-bold">
+                            Date
+                          </span>
+                          <br />
+                          <span>
+                            <input class="form-control form-control-sm text-bg-dark" type="datetime-local"
+                              placeholder="{{invoice.date}}" ng-model="invoice.date" />
+                          </span>
+                        </small>
+                      </p>
+                    </div>
+                    <div class="col-4">
+                      <p class="lh-1 m-0">
+                        <small>
+                          <span class="fw-bold">
+                            Time
+                          </span>
+                          <br />
+                          <span>
+                            <input class="form-control form-control-sm text-bg-dark" type="time"
+                              placeholder="{{invoice.time}}" ng-model="invoice.time" />
+                          </span>
+                        </small>
+                      </p>
+                    </div>
+                  </div>
+                </td>
+              </tr>
+
+              <tr class="text-end">
+                <th scope="col">
+                  <small class="sm-small">
+                    #
+                  </small>
+                </th>
+                <th scope="col">
+                  <small class="sm-small">
+                    Item
+                  </small>
+                </th>
+                <th scope="col">
+                  <small class="sm-small">
+                    Price
+                  </small>
+                </th>
+                <th scope="col">
+                  <small class="sm-small">
+                    Amount
+                  </small>
+                </th>
+                <th scope="col">
+                  <button type="button" class="btn btn-primary btn-sm" ng-click="rowAdd()">
+
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                      class="bi bi-plus-circle" viewBox="0 0 16 16">
+                      <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
+                      <path
+                        d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z" />
+                    </svg>
+
+                    <span class="visually-hidden">
+                      Add
+                    </span>
+                  </button>
+                </th>
+              </tr>
+
+              <tr class="text-end" ng-repeat="i in item">
+                <th scope="row" ng-bind="$index + 1" class="sm-small"></th>
+                <td>
+                  <input class="form-control form-control-sm text-bg-dark" type="text" placeholder="{{i.name}}"
+                    ng-model="i.name" />
+                </td>
+                <td>
+                  <input class="form-control form-control-sm text-bg-dark" type="number" placeholder="{{i.price}}"
+                    ng-model="i.price" />
+                </td>
+                <td>
+                  <div class="input-group">
+                    <input class="form-control form-control-sm text-bg-dark" type="number" placeholder="{{i.qty}}"
+                      ng-model="i.qty" />
+                    <select class="form-select form-select-sm text-bg-dark" ng-model="i.unit">
+                      <option value="pcs">pcs</option>
+                      <option value="qty">qty</option>
+                      <option value="kg">kg</option>
+                      <option value="g">g</option>
+                      <option value="hr">hours</option>
+                      <option value="min">minutes</option>
+                      <option value="shoots">shoots</option>
+                      <option value="other">other</option>
+                    </select>
+                  </div>
+                </td>
+                <td>
+                  <button type="button" class="btn btn-primary btn-sm" ng-click="rowRemove($index)">
+
+
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                      class="bi bi-trash-fill" viewBox="0 0 16 16">
+                      <path
+                        d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1H2.5zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5zM8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5zm3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0z" />
+                    </svg>
+
+                    <span class="visually-hidden">
+                      Remove
+                    </span>
+                  </button>
+                </td>
+              </tr>
+
+            </table>
+          </div>
+
+          <div class="col-sm-12 col-md-5">
+            <table class="table table-sm table-borderless sm-small bg-white rounded font-monospace" id="capture">
+              <tr class="text-center">
+                <th colspan="5">
+                  <h1 class="text-uppercase fw-semibold fs-3 m-0 lh-1">{{shop.name}}</h1>
+                </th>
+              </tr>
+
+              <tr class="text-center">
+                <td colspan="5">
+                  <p class="lh-1 m-0 sm-small">
+                    <small>
+                      <span>{{shop.addr1}}</span>
+                      <br />
+                      <span>{{shop.addr2}}</span>
+                      <br />
+                      <span>{{shop.addr3}}</span>
+                      <br />
+                      <span>{{shop.tel}}</span>
+                    </small>
+                  </p>
+                </td>
+              </tr>
+
+              <tr class="text-center border-dark border-top border-bottom">
+                <td colspan="5">
+                  <div class="row sm-small">
+                    <div class="col-4">
+                      <p class="lh-1 m-0">
+                        <small>
+                          <span class="fw-bold">
+                            ID
+                          </span>
+                          <br />
+                          <span>
+                            {{invoice.id}}
+                          </span>
+                        </small>
+                      </p>
+                    </div>
+                    <div class="col-4">
+                      <p class="lh-1 m-0">
+                        <small>
+                          <span class="fw-bold">
+                            Date
+                          </span>
+                          <br />
+                          <span>
+                            {{invoice.date | date}}
+                          </span>
+                        </small>
+                      </p>
+                    </div>
+                    <div class="col-4">
+                      <p class="lh-1 m-0">
+                        <small>
+                          <span class="fw-bold">
+                            Time
+                          </span>
+                          <br />
+                          <span>
+                            {{invoice.time | date:'mediumTime'}}
+                          </span>
+                        </small>
+                      </p>
+                    </div>
+                  </div>
+                </td>
+              </tr>
+
+              <tr class="text-end">
+                <th scope="col">
+                  <small class="sm-small">
+                    #
+                  </small>
+                </th>
+                <th scope="col">
+                  <small class="sm-small">
+                    Item
+                  </small>
+                </th>
+                <th scope="col">
+                  <small class="sm-small">
+                    Price
+                  </small>
+                </th>
+                <th scope="col">
+                  <small class="sm-small">
+                    Amount
+                  </small>
+                </th>
+                <th scope="col">
+                  <small class="sm-small">
+                    Total
+                  </small>
+                </th>
+              </tr>
+
+              <tr class="text-end" ng-repeat="i in item">
+                <th>
+                  <small scope="row" ng-bind="$index + 1" class="sm-small"></small>
+                </th>
+                <td>
+                  <small ng-bind="i.name" class="sm-small"></small>
+                </td>
+                <td>
+                  <small ng-bind="invoice.currency + (i.price | number : 2)" class="sm-small"></small>
+                </td>
+                <td>
+                  <small ng-bind="i.qty + i.unit" class="sm-small"></small>
+                </td>
+                <td>
+                  <small ng-bind="invoice.currency + (i.price * i.qty | number : 2)" class="sm-small"></small>
+                </td>
+              </tr>
+
+              <tr class="text-end border-top">
+                <th colspan="4" scope="row">
+                  <small class="sm-small">Total</small>
+                </th>
+                <td>
+                  <small ng-bind="invoice.currency + (total() | number : 2)" class="sm-small fw-bold"></small>
+                </td>
+              </tr>
+
+              <tr class="text-center">
+                <td colspan="5" class="sm-small">
+                  <p>
+                    <small>
+                      Thank you, come again!
+                      <br />
+                      <span>
+                        <small>
+                          &#10084;
+                        </small>
+                      </span>
+                    </small>
+                  </p>
+                </td>
+              </tr>
+
+            </table>
+
+            <div class="col-12 text-center">
+              <div class="btn-group btn-group-sm">
+                <button type="button" class="btn btn-success btn-sm" title="Print" onclick="window.print()">
+
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                    class="bi bi-printer-fill" viewBox="0 0 16 16">
+                    <path
+                      d="M5 1a2 2 0 0 0-2 2v1h10V3a2 2 0 0 0-2-2H5zm6 8H5a1 1 0 0 0-1 1v3a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-3a1 1 0 0 0-1-1z" />
+                    <path
+                      d="M0 7a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2h-1v-2a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v2H2a2 2 0 0 1-2-2V7zm2.5 1a.5.5 0 1 0 0-1 .5.5 0 0 0 0 1z" />
+                  </svg>
+
+                  <span>
+                    Print
+                  </span>
+                </button>
+                <button type="button" class="btn btn-success btn-sm" title="Capture" ng-click="_saveAsImg()">
+
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                    class="bi bi-floppy-fill" viewBox="0 0 16 16">
+                    <path
+                      d="M0 1.5A1.5 1.5 0 0 1 1.5 0H3v5.5A1.5 1.5 0 0 0 4.5 7h7A1.5 1.5 0 0 0 13 5.5V0h.086a1.5 1.5 0 0 1 1.06.44l1.415 1.414A1.5 1.5 0 0 1 16 2.914V14.5a1.5 1.5 0 0 1-1.5 1.5H14v-5.5A1.5 1.5 0 0 0 12.5 9h-9A1.5 1.5 0 0 0 2 10.5V16h-.5A1.5 1.5 0 0 1 0 14.5v-13Z" />
+                    <path
+                      d="M3 16h10v-5.5a.5.5 0 0 0-.5-.5h-9a.5.5 0 0 0-.5.5V16Zm9-16H4v5.5a.5.5 0 0 0 .5.5h7a.5.5 0 0 0 .5-.5V0ZM9 1h2v4H9V1Z" />
+                  </svg>
+
+                  <span>
+                    Capture
+                  </span>
+                </button>
+              </div>
+            </div>
+
+          </div>
+
+
+          <!-- v1.1 -->
+        </div>
+
+
+        <script>
+
+          var app = angular.module('invoiceApp', []);
+
+          app.controller('invoiceCtrl', function ($scope) {
+
+            $scope.shop = {
+              name: 'Apple',
+              addr1: 'One Apple Park Way',
+              addr2: 'Cupertino,',
+              addr3: 'CA 95014',
+              tel: '(408) 996-1010'
+            }
+
+            $scope.invoice = {
+              id: '#00010',
+              date: Date.now(),
+              time: new Date().getTime(),
+              currency: '$'
+            }
+
+            var savedShop = localStorage.getItem('shop');
+            if (savedShop) {
+              $scope.shop = JSON.parse(savedShop);
+            }
+            var savedInvoice = localStorage.getItem('invoice');
+            if (savedInvoice) {
+              $scope.invoice = JSON.parse(savedInvoice);
+            }
+
+            $scope.$watch('shop', function () {
+              localStorage.setItem('shop', JSON.stringify($scope.shop));
+            }, true);
+
+            $scope.$watch('invoice', function () {
+              localStorage.setItem('invoice', JSON.stringify($scope.invoice));
+            }, true);
+
+            $scope.item = [{
+              itemId: 1,
+              name: 'Apple',
+              price: 10.10,
+              qty: 10,
+              unit: 'pcs'
+            },
+            {
+              itemId: 2,
+              name: 'Mango',
+              price: 11.11,
+              qty: 11,
+              unit: 'pcs'
+            }];
+
+
+            $scope.total = function () {
+              var _sum = 0;
+              angular.forEach($scope.item, function (item) {
+                _sum += (item.price * item.qty);
+              })
+              return _sum;
+            };
+
+
+            $scope.rowAdd = function () {
+              $scope.item.push({
+                itemId: $scope.item.length + 1,
+                name: "",
+                price: "",
+                qty: "",
+                unit: ""
+              });
+            };
+
+            $scope.rowRemove = function (itemIndex) {
+              $scope.item.splice(itemIndex, 1);
+            };
+
+            $scope._saveAsImg = function () {
+              _capture = document.querySelector("#capture");
+
+              // FileSaver.min.js
+              function _save(canvas) {
+                canvas.toBlob(function (blob) {
+                  saveAs(blob, $scope.shop.name + "-" + $scope.invoice.id + "-" + $scope.invoice.date + ".png");
+                });
+              }
+
+              // html2canvas.min.js
+              html2canvas(_capture, {
+                logging: true,
+                scale: 2
+              }).then(function (canvas) {
+                _save(canvas);
+              });
+
+            };
+
+          });
+
+        </script>
+
+
+
+      </div>
+
+
+    </main>
+  </section>
+
+
+  <section>
+    <footer>
+      <div class='container text-center p-3'>
+        <p class='text-white-50 m-0'>
+          code with &#10084;
+        </p>
+      </div>
+    </footer>
+  </section>
+
+
+  <script src="js/html2canvas.min.js"></script>
+  <script src="js/FileSaver.min.js"></script>
+  <script src='js/bootstrap.bundle.min.js'></script>
+
+
+</body>
+
+</html>
