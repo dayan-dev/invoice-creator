@@ -1,4 +1,4 @@
-# invoice-creator
+# Invoice Creator
 AngularJS based project where you can create and save a simple invoice.
 
 
