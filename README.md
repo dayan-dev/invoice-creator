@@ -5,7 +5,12 @@ AngularJS based project where you can create and save a simple invoice.
 Live version of this can be found here,
 https://easyalternative.blogspot.com/p/invoice-creator.html
 
+### Desktop
+![Screenshot of desktop UI, Invoice Creator](Screen Shot 2023-12-04 at 17.18.52-fullpage.png)
 
-![Screenshot of desktop UI, Invoice Creator](https://github.com/dayan-dev/invoice-creator/blob/main/Screenshot_2023-11-19_at_19-42-01_Invoice_Creator.png)
+
+### Mobile
+
+
 
 
