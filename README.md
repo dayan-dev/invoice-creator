@@ -10,7 +10,4 @@ https://easyalternative.blogspot.com/p/invoice-creator.html
 
 
 ### Mobile
-
-
-
-
+![Screenshot of mobile UI, Invoice Creator](ic_mobile.png)
